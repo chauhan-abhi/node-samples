@@ -3,6 +3,8 @@ const http = require('http')
 // This server is an EventEmiiter so all 
 // on, emit and addListeners are available
 const server = http.createServer((req, res) => {
+    // hardcoded this iffs 
+    // use expres
     if(req.url === '/') {
         res.write('Send this respinse')
         res.end()
@@ -16,4 +18,4 @@ const server = http.createServer((req, res) => {
 //     console.log('New Connection')
 // })
 server.listen(8000)
-console.log('Listening on port 8000....')
+console.log('Listening on port 8000...') 
