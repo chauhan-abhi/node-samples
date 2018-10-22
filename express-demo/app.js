@@ -17,7 +17,7 @@ app.get('/', (req, res) => {
 })
 
 app.get('/api/courses', (req, res) => {
-    res.send([1,2,3])
+    res.send(courses)
 })
 
 // /api/courses/1/
@@ -26,7 +26,7 @@ app.get('/api/courses/:id', (req, res) =>{
     if(course) {
         res.send(course)
     } else {
-        res.status(400).send('The course with ID not available')
+        return res.status(400).send('The course with ID not available')
     } 
 
 })
@@ -38,13 +38,10 @@ app.get('/api/courses/:yyyy/:mm', (req, res) =>{
 
 
 app.post('/api/courses', (req, res) => {
-    const schema = {
-        name: Joi.string().min(3).required()
-    }
-    const result = Joi.validate(req.body, schema)
-    if(result.error) {
-        res.status(400).send(result.error.details[0].message)
-        return
+    //OBJECT DESTRUCTURING
+    const {error} = validateCourse(req.body)    //result.error 
+    if(error) {
+       return  res.status(400).send(error.details[0].message)
     }
 
     const course = {
@@ -56,6 +53,39 @@ app.post('/api/courses', (req, res) => {
     courses.push(course)
     res.send(course)
 })
+
+app.put('/api/courses/:id', (req, res) => {
+    const course = courses.find(c=> c.id === parseInt(req.params.id))
+    if(!course) {
+        return res.status(400).send('The course with ID not available')
+    }
+    //const result = validateCourse(req.body)
+    const {error} = validateCourse(req.body)    //result.error OBJECT DESTRUCTURING
+
+    if(error) {
+        return res.status(400).send(error.details[0].message)
+    }
+    //update course
+    course.name = req.body.name
+    res.send(course)
+})
+
+app.delete('/api/courses/:id', (req, res) => {
+    const course = courses.find(c=> c.id === parseInt(req.params.id))
+    if(!course) {
+        return res.status(400).send('The course with ID not available')
+    }
+    const index = courses.indexOf(course)
+    courses.splice(index,1)  //remove course from courses array
+    res.send(course)
+})
+
+function validateCourse(course) {
+    const schema = {
+        name: Joi.string().min(3).required()
+    }
+    return Joi.validate(course, schema)
+}
 
 const port = process.env.PORT || 3000
 app.listen(port, () => {
