@@ -10,8 +10,11 @@ const dbDebugger = require('debug')('app:db')
 
 
 
-console.log(`NODE_ENV: ${process.env.NODE_ENV}`) // return undefined by default
-console.log(app.get('env')) // return development by default
+// console.log(`NODE_ENV: ${process.env.NODE_ENV}`) // return undefined by default
+// console.log(app.get('env')) // return development by default
+
+app.set('view engine', 'pug')
+app.set('views', './views') //default
 
 // parse JSON middleware used 
 // express.json() -> read the req , find the JSON object in req and
@@ -24,8 +27,8 @@ app.use(express.urlencoded({extended: true}))
 app.use(express.static('public'))
 app.use(helmet())
 
-console.log('Application Name: ' + config.get("name"))
-console.log('Mail Server: '+ config.get('mail.host'))
+// console.log('Application Name: ' + config.get("name"))
+// console.log('Mail Server: '+ config.get('mail.host'))
 
 /**********read password from env variable not config file************/
 console.log('Mail Password: '+ config.get('mail.password'))
@@ -59,7 +62,8 @@ const courses = [
 
 
 app.get('/', (req, res) => {
-    res.send('Express response')    
+    res.render('index', {title: 'Express Demo App', message: 'Hi'})
+    //res.send('Express response')    
 })
 
 app.get('/api/courses', (req, res) => {
