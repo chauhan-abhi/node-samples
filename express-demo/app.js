@@ -1,9 +1,44 @@
 const express = require('express') 
 const Joi = require('joi')      //returns class
 const app = express()
+const logger = require('./logger')
+const helmet = require('helmet')
+const morgan = require('morgan')    // logging function
+
+
+console.log(`NODE_ENV: ${process.env.NODE_ENV}`) // return undefined by default
+console.log(app.get('env')) // return development by default
 
 // parse JSON middleware used 
+// express.json() -> read the req , find the JSON object in req and
+// set it in req.body
 app.use(express.json())
+// parses incoming r eq with url-encoded payloads
+//key=value&key=value
+app.use(express.urlencoded({extended: true}))
+//static assets images,css
+app.use(express.static('public'))
+app.use(helmet())
+
+if(app.get('env') === 'development') {
+    console.log('Morgan enabled')
+    app.use(morgan('tiny'))   
+}
+
+// middleware ...here next: ref to next middleware function
+// called in sequence Logging-> Authenticating-> Route Handler
+
+// app.use(function(req, res, next) {
+//     console.log('Logging ...')
+//     next()
+// })
+/********Alter ***********/
+app.use(logger)
+
+app.use(function(req, res, next) {
+    console.log('Authenticating ...')
+    next()
+})
 
 const courses = [
     {id: 1, name: 'DS'},

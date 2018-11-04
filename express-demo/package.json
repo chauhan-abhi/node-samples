@@ -9,7 +9,9 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.16.4",
-    "joi": "^14.0.0"
+    "helmet": "^3.14.0",
+    "joi": "^14.0.0",
+    "morgan": "^1.9.1"
   },
   "description": ""
 }
