@@ -4,7 +4,3 @@ Samples implementing core node-modules:
 - path
 - http
 - events
-- express
-- morgan
-- config
-- Joi
