@@ -4,6 +4,10 @@ const app = express()
 const logger = require('./logger')
 const helmet = require('helmet')
 const morgan = require('morgan')    // logging function
+const config = require('config')
+const startupDebugger = require('debug')('app:startup')
+const dbDebugger = require('debug')('app:db')
+
 
 
 console.log(`NODE_ENV: ${process.env.NODE_ENV}`) // return undefined by default
@@ -20,9 +24,16 @@ app.use(express.urlencoded({extended: true}))
 app.use(express.static('public'))
 app.use(helmet())
 
+console.log('Application Name: ' + config.get("name"))
+console.log('Mail Server: '+ config.get('mail.host'))
+
+/**********read password from env variable not config file************/
+console.log('Mail Password: '+ config.get('mail.password'))
+
 if(app.get('env') === 'development') {
-    console.log('Morgan enabled')
-    app.use(morgan('tiny'))   
+    app.use(morgan('tiny')) 
+    startupDebugger('Morgan enabled....')
+  
 }
 
 // middleware ...here next: ref to next middleware function
@@ -121,6 +132,10 @@ function validateCourse(course) {
     }
     return Joi.validate(course, schema)
 }
+
+//cli for this namespace shorcut to run
+/****DEBUG=app:db nodemon app.js*****/
+dbDebugger('Connected to databas...')
 
 const port = process.env.PORT || 3000
 app.listen(port, () => {
