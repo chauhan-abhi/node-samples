@@ -22,7 +22,7 @@ app.set('views', './views') //default
 // express.json() -> read the req , find the JSON object in req and
 // set it in req.body
 app.use(express.json())
-// parses incoming r eq with url-encoded payloads
+// parses incoming req with url-encoded payloads
 //key=value&key=value
 app.use(express.urlencoded({extended: true}))
 //static assets images,css
@@ -64,7 +64,7 @@ app.use(function(req, res, next) {
 
 //cli for this namespace shorcut to run
 /****DEBUG=app:db nodemon app.js*****/
-dbDebugger('Connected to databas...')
+dbDebugger('Connected to database...')
 
 const port = process.env.PORT || 3000
 app.listen(port, () => {
