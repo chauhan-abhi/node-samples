@@ -22,10 +22,11 @@ const Course = mongoose.model('courses', courseSchema)
 
 async function createCourse() {
     const course = new Course({
-        name: 'Node Course',
-        author: 'Abhi',
-        tags: ['node', 'aysnc'],
-        isPublished: true   
+        name: 'Express js Course',
+        author: 'Mosh',
+        tags: ['express', 'backed'],
+        isPublished: true   ,
+        price : 10
     })
     const result = await course.save()
     console.log(result) 
@@ -87,8 +88,15 @@ async function updateCourse(id) {
     console.log(result)
 }
 
-//createCourse()
+async function removeCourse(id) {
+    const result = await Course.deleteMany({ _id: id})
+    //const course = await Course.findOneAndDelete(id)
+    console.log(course)
+}
+createCourse()
 
 //getCourses()
 
-updateCourse('5a68fdc3615eda645bc6bdec')
+//updateCourse('5a68fdc3615eda645bc6bdec')
+//removeCourse('5a68fdd7bee8ea64649c2777')
+
