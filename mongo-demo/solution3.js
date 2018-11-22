@@ -19,6 +19,8 @@ async function query() {
     return await Course
     .find({isPublished: true})
     .or([
+        // either of these properties hold 
+        // then select the object
         { price: { $gte: 15 }},
         { name:  /.*by.*/i }
     ])

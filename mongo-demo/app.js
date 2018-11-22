@@ -1,23 +1,24 @@
 const mongoose = require('mongoose')
 
-mongoose.connect('mongodb://localhost/playground', { useNewUrlParser: true })
-    .then(() => console.log('Connected to MongoDB...'))
-    .catch(err => console.error('Could not connect to MongoDB...', err))
+mongoose.connect('mongodb://localhost/mongo-exerises', { useNewUrlParser: true })
+        .then(() => console.log('Connected to MongoDB...'))
+        .catch(err => console.error('Could not connect to MongoDB...', err))
 
-    const courseSchema = new mongoose.Schema({
+const courseSchema = new mongoose.Schema({
         name: String,
         author: String,
         tags: [String],
+        price: Number,
         date: { type: Date, default: Date.now },
         isPublished: Boolean
-    })
+})
 
 /**
  * args - 2
  * collection name,
  * schema
  */
-const Course = mongoose.model('course', courseSchema)
+const Course = mongoose.model('courses', courseSchema)
 
 async function createCourse() {
     const course = new Course({
@@ -32,7 +33,6 @@ async function createCourse() {
 
 async function getCourses() {
     const courses = await Course
-     
     .find()
     //.find({author: 'Abhi', isPublished: true})
     //.find({price: {$gte: 10, $lte: 20}})
@@ -41,7 +41,7 @@ async function getCourses() {
     //published is true 
     // Start with Abhi
     //.find({autor: /^Abhi/})
-    // Ends with Singh and i for case insesitive
+    // Ends with Singh and i for case insensitive
     //.find({ author: /Singh$/i})
     // Contains Abhi
     //.find({ author: /.*Abhi.*/})
@@ -51,7 +51,44 @@ async function getCourses() {
     .select({name: 1, tags: 1}) 
     console.log(courses)    
 }
+
+async function updateCourse(id) {
+    // Approach: Query first
+    // findById()
+    // Modify its props
+    // save()
+    // const course = await Course.findById(id)
+    // debugger
+    // if(!course) {
+    //     return
+    // } 
+    // course.isPublished = true
+    // course.author = 'Another Author'
+    // const result = await course.save()
+    // console.log(result)
+
+    // course.set({
+    //     isPublished: true,
+    //     author: 'Another Author'
+    // })
+    
+  
+
+    //Approach: Update first
+    //Update directly
+    // Optionally: get the updated document
+
+    const result = await Course.findOneAndUpdate(id, {
+        $set: {
+            author: 'ABhi',
+            isPublished: false
+        }
+    }, { new: true})
+    console.log(result)
+}
+
 //createCourse()
 
-getCourses()
+//getCourses()
 
+updateCourse('5a68fdc3615eda645bc6bdec')
