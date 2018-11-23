@@ -5,10 +5,34 @@ mongoose.connect('mongodb://localhost/mongo-exerises', { useNewUrlParser: true }
         .catch(err => console.error('Could not connect to MongoDB...', err))
 
 const courseSchema = new mongoose.Schema({
-        name: String,
+        name: { 
+            type: String,
+            required : true,
+            minlength: 5,
+            maxlength: 255,
+            //match: /pattern/
+            },
+        category: {
+            type: String,
+            required : true,
+            enum: ['web', 'mobile', 'network']
+        },    
         author: String,
-        tags: [String],
-        price: Number,
+        tags: {
+            type: Array, //initialise this to empty array
+            validate: {
+                validator: function(v) {
+                    return v && v.length > 0
+                },
+                message: 'A course should have atleast one tag.'
+            }
+        },
+        price: {
+            type: Number,
+            min: 10,
+            max: 200,
+            required: function() { return this.isPublished }
+        },
         date: { type: Date, default: Date.now },
         isPublished: Boolean
 })
@@ -24,12 +48,23 @@ async function createCourse() {
     const course = new Course({
         name: 'Express js Course',
         author: 'Mosh',
-        tags: ['express', 'backed'],
+        category: 'web',
+        //tags: [], //['express', 'backend'],
         isPublished: true   ,
         price : 10
     })
-    const result = await course.save()
-    console.log(result) 
+    try {
+        // course.validate((err) => {
+        //     if(err) {
+
+        //     }
+        //})  returns a promise of void
+        const result = await course.save()
+        console.log(result) 
+    }
+    catch(e) {
+        console.log(e.message)
+    }
 }
 
 async function getCourses() {
