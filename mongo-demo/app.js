@@ -15,14 +15,21 @@ const courseSchema = new mongoose.Schema({
         category: {
             type: String,
             required : true,
-            enum: ['web', 'mobile', 'network']
+            enum: ['web', 'mobile', 'network'],
+            lowercase: true,
+            trim: true
         },    
         author: String,
         tags: {
             type: Array, //initialise this to empty array
             validate: {
-                validator: function(v) {
-                    return v && v.length > 0
+                isAsync: true,
+                validator: function(v, callback) {
+                    setTimeout(() => {
+                        // Do some async work
+                        const result =  v && v.length > 0
+                        callback(result)
+                    }, 4000)
                 },
                 message: 'A course should have atleast one tag.'
             }
@@ -31,7 +38,9 @@ const courseSchema = new mongoose.Schema({
             type: Number,
             min: 10,
             max: 200,
-            required: function() { return this.isPublished }
+            required: function() { return this.isPublished },
+            get: v => Math.round(v),    //by default called when read from db
+            set: v => Math.round(v)     //by default when wrinting to db
         },
         date: { type: Date, default: Date.now },
         isPublished: Boolean
@@ -48,10 +57,10 @@ async function createCourse() {
     const course = new Course({
         name: 'Express js Course',
         author: 'Mosh',
-        category: 'web',
-        //tags: [], //['express', 'backend'],
+        category: 'Web',
+        tags: ['frontend'], //['express', 'backend'],
         isPublished: true   ,
-        price : 10
+        price : 14.6
     })
     try {
         // course.validate((err) => {
@@ -63,13 +72,15 @@ async function createCourse() {
         console.log(result) 
     }
     catch(e) {
-        console.log(e.message)
+        for(field in e.errors){
+            console.log(e.errors[field].message)
+        }
     }
 }
 
 async function getCourses() {
     const courses = await Course
-    .find()
+    .find({ _id: '5bf843d6ba436a46ca1a640b'})
     //.find({author: 'Abhi', isPublished: true})
     //.find({price: {$gte: 10, $lte: 20}})
     //.find({price: { $in: [10,15,20]}})
@@ -84,8 +95,8 @@ async function getCourses() {
     .limit(10)
     .sort({name: 1})
     //.count()
-    .select({name: 1, tags: 1}) 
-    console.log(courses)    
+    .select({name: 1, tags: 1, price:1}) 
+    console.log(courses[0].price )    
 }
 
 async function updateCourse(id) {
@@ -128,9 +139,9 @@ async function removeCourse(id) {
     //const course = await Course.findOneAndDelete(id)
     console.log(course)
 }
-createCourse()
+//createCourse()
 
-//getCourses()
+getCourses()
 
 //updateCourse('5a68fdc3615eda645bc6bdec')
 //removeCourse('5a68fdd7bee8ea64649c2777')
