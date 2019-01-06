@@ -8,3 +8,4 @@ Samples implementing core node-modules:
 - morgan
 - config
 - Joi
+- fawn
