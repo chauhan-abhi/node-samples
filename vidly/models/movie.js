@@ -11,6 +11,8 @@ const movieSchema = new mongoose.Schema({
         maxlength: 255
     },
    genre: {
+       // here reusing the genre Schema defined in Genre module
+       // so we get hands on all the genre properties defined
         type: genreSchema,
         required: true
    },
