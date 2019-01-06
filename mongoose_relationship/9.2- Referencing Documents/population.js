@@ -42,13 +42,13 @@ async function createCourse(name, author) {
   console.log(result);
 }
 
-async function listCourses() { 
+async function listCourses() {   
   const courses = await Course
     .find()
     // here second argument is the properties
     // of author we want to include or exclude(-)
     .populate('author', 'name -_id')     // target property
-    // we can populate multiple documents
+    /*********** we can populate multiple documents **************/
     .select('name author'); // name and ObjectId
   console.log(courses);
 }
