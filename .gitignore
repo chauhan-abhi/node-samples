@@ -3,4 +3,5 @@ mongo-demo/node_modules
 vidly/node_modules
 async-demo/node_modules
 /node-modules
-
+vidly/.DS_Store
+mongoose_relationship/9.2- Referencing Documents/node_modules
