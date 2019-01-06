@@ -53,8 +53,8 @@ async function listCourses() {
   console.log(courses);
 }
 
-//createAuthor('Mosh', 'My bio', 'My Website');
+createAuthor('Mosh', 'My bio', 'My Website');
 
-//createCourse('Android Course', '5c31fe41853c492707dae72f')
+createCourse('Android Course', '5c31fe41853c492707dae72f')
 
 listCourses();

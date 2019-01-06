@@ -15,16 +15,21 @@ const Author = mongoose.model('Author', authorSchema);
 const Course = mongoose.model('Course', new mongoose.Schema({
   name: String,
   // author: authorSchema  // embedding
-  author: {
-    type: authorSchema,
-    required = true  // make required
-  }
+  // author: {
+  //   type: authorSchema,
+  //   required = true  // make required
+  // }
+
+
+  // create course with array of authors
+  authors: [authorSchema]
+
 }));
 
-async function createCourse(name, author) {
+async function createCourse(name, authors) {
   const course = new Course({
     name, 
-    author
+    authors
   }); 
   
   const result = await course.save();
@@ -52,8 +57,27 @@ async function updateAuthor(courseId) {
   })
 }
 
+async function addAuthor(courseId, author) {
+  const course = await Course.findById(courseId)
+  course.authors.push(author)
+  course.save()
+}
+
+async function removeAuthor(courseId, authorId) {
+  const course = await Course.findById(courseId)
+  const author = course.authors.id(authorId)
+  author.remove()
+  course.save()
+
+}
+
 // In this embedding technique an author can only be saved
 // in the context of their parent
-//createCourse('Node Course', new Author({ name: 'Mosh' }));
+createCourse('Node Course', [
+  new Author({ name: 'Mosh' }),
+  new Author({ name: 'Abhi'})
+]);
 updateAuthor('5c320a723927b24937208577');
 
+addAuthor('5c3216f2f4126d4ec13ae9d2', new Author({name: 'Amy'}))
+removeAuthor('5c3216f2f4126d4ec13ae9d2','5c321774fe71894f10368e6c')
