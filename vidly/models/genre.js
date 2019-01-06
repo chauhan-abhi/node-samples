@@ -23,3 +23,4 @@ const genreSchema = new mongoose.Schema({
 
   module.exports.Genre = Genre
   module.exports.validate = validateGenre
+  module.exports.genreSchema = genreSchema
