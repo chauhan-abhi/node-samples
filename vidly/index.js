@@ -1,3 +1,8 @@
+const Joi = require('joi');
+
+// used for objectId validation
+Joi.objectId = require('joi-objectid')(Joi) // returns a function
+
 const genres = require('./routes/genres')
 const customers = require('./routes/customers')
 const movies = require('./routes/movies')
