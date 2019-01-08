@@ -7,7 +7,7 @@ Samples implementing core node-modules:
 - express
 - morgan    --> for logging
 - pug       --> template engine
-- config    --> hierarchical configurations for your app                        deployments
+- config    --> hierarchical configurations for your app                        deployments in JSON files or env vars
 - Joi       --> Validation
 - fawn      --> Two phase commit in Transaction in MongoDb
 - Lodash    --> Object handling
