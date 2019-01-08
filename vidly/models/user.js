@@ -22,7 +22,9 @@ const userSchema = new mongoose.Schema({
     required: true,
     minlength: 5,
     maxlength: 1024
-  }
+  }, 
+  // pass this in jwt
+  isAdmin: Boolean
 })
 
 userSchema.methods.generateAuthToken = function () {
@@ -30,7 +32,7 @@ userSchema.methods.generateAuthToken = function () {
   //const token = jwt.sign({_id: user._id}, config.get('jwtPrivateKey'))
   
   // payload, secret key
-  const token = jwt.sign({ _id: this._id }, config.get('jwtPrivateKey'))
+  const token = jwt.sign({ _id: this._id, isAdmin: this.isAdmin }, config.get('jwtPrivateKey'))
   return token
 }
 
