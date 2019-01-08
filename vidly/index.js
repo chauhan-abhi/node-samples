@@ -1,5 +1,4 @@
 const Joi = require('joi');
-
 // used for objectId validation
 Joi.objectId = require('joi-objectid')(Joi) // returns a function
 
@@ -16,7 +15,6 @@ const mongooose = require('mongoose')
 mongooose.connect(('mongodb://localhost/vidly'), { useNewUrlParser: true })
     .then(() => console.log('Connected to MongoDB'))
     .catch(err => console.log('Could not connect to MongoDB'))
-
 
 app.use(express.json())
 app.use('/api/genres', genres)
