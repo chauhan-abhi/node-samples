@@ -1,4 +1,6 @@
 require('express-async-errors') // this patches the same work that async.js middleware performs
+const winston = require('winston')
+require('winston-mongodb')
 const error = require('./middleware/error')
 const config = require('config')
 const Joi = require('joi');
@@ -15,6 +17,14 @@ const auth = require('./routes/auth')
 const express = require('express')
 const app = express()
 const mongooose = require('mongoose')
+
+winston.add(winston.transports.File, { filename: 'logfile.log' })
+// logging to mongoDb
+winston.add(winston.transports.MongoDB, {
+     db: 'mongodb://localhost/vidly',
+    level: 'error'  // only error will be logged
+})
+
 
 // pass name of application settings
 if (!config.get('jwtPrivateKey')) {
