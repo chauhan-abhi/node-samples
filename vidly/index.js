@@ -1,4 +1,4 @@
-require('express-async-errors')
+require('express-async-errors') // this patches the same work that async.js middleware performs
 const error = require('./middleware/error')
 const config = require('config')
 const Joi = require('joi');

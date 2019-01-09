@@ -12,3 +12,4 @@ Samples implementing core node-modules:
 - fawn          --> Two phase commit in Transaction in MongoDb
 - Lodash        --> Object handling
 - jsonwebtoken  --> handling jwt in authentication
+- express-async-errors  --> try catch handling of router functions same as implemented in middleware/async.js
