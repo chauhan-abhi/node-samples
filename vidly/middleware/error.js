@@ -1,7 +1,7 @@
 const winston = require('winston')
 
 /**This middleware only catches errors in 
- * req proccessing pipeline --> particular to express
+ * REQ PROCESSING PIPELINE --> particular to express
  * No error handling if outside the context of express
  */
 module.exports = function (err, req, res, next) {
