@@ -1,3 +1,4 @@
+const error = require('./middleware/error')
 const config = require('config')
 const Joi = require('joi');
 // used for objectId validation
@@ -31,6 +32,10 @@ app.use('/api/movies', movies)
 app.use('/api/rentals', rentals)
 app.use('/api/users', users)
 app.use('/api/auth', auth)
+
+// special middleware defined after all the 
+// routing middlewares so on calling next we come here
+app.use(error)
 
 const port = process.env.PORT || 3000
 app.listen(port, () => console.log(`Listening on port ${port}...`))
